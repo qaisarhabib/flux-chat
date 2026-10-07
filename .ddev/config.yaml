@@ -1,0 +1,23 @@
+name: simple-mistral-chatbot
+type: generic
+docroot: .
+webserver_type: generic
+nodejs_version: "22"
+
+omit_containers:
+  - db
+
+web_extra_exposed_ports:
+  - name: chatbot-frontend
+    container_port: 5173
+    http_port: 80
+    https_port: 443
+
+web_extra_daemons:
+  - name: chatbot-frontend
+    command: "npm run dev -w frontend -- --host 0.0.0.0"
+    directory: /var/www/html
+
+  - name: chatbot-backend
+    command: "npm run start:dev -w backend"
+    directory: /var/www/html
