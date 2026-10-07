@@ -12,21 +12,21 @@ import {
   HumanMessage,
   SystemMessage,
 } from '@langchain/core/messages';
-import { ChatMistralAI } from '@langchain/mistralai';
+import { ChatGroq } from '@langchain/groq';
 import { randomUUID } from 'node:crypto';
 
 @Injectable()
 export class ChatService {
-  private readonly model: ChatMistralAI | null;
+  private readonly model: ChatGroq | null;
   private readonly conversations = new Map<string, BaseMessage[]>();
 
   constructor(private readonly config: ConfigService) {
-    const apiKey = this.config.get<string>('MISTRAL_API_KEY');
+    const apiKey = this.config.get<string>('GROQ_API_KEY');
 
     this.model = apiKey
-      ? new ChatMistralAI({
+      ? new ChatGroq({
           apiKey,
-          model: this.config.get<string>('MISTRAL_MODEL', 'mistral-small-latest'),
+          model: this.config.get<string>('GROQ_MODEL', 'openai/gpt-oss-20b'),
           temperature: 0.7,
           maxRetries: 0,
         })
@@ -36,7 +36,7 @@ export class ChatService {
   async chat(message: string, requestedId?: string) {
     if (!this.model) {
       throw new ServiceUnavailableException(
-        'MISTRAL_API_KEY is not configured on the server.',
+        'GROQ_API_KEY is not configured on the server.',
       );
     }
 
@@ -62,18 +62,18 @@ export class ChatService {
 
       return { reply, conversationId };
     } catch (error) {
-      console.error('Mistral request failed:', error);
+      console.error('Groq request failed:', error);
 
       if (this.getStatusCode(error) === 429) {
         throw new HttpException(
-          'Mistral rate limit exceeded. Check your Mistral plan or API billing and try again.',
+          'Groq rate limit exceeded. Check your Groq usage limits and try again.',
           HttpStatus.TOO_MANY_REQUESTS,
         );
       }
 
       if (this.getStatusCode(error) === 401) {
         throw new HttpException(
-          'The configured Mistral API key was rejected.',
+          'The configured Groq API key was rejected.',
           HttpStatus.UNAUTHORIZED,
         );
       }
@@ -117,6 +117,15 @@ export class ChatService {
       typeof error.statusCode === 'number'
     ) {
       return error.statusCode;
+    }
+
+    if (
+      error &&
+      typeof error === 'object' &&
+      'status' in error &&
+      typeof error.status === 'number'
+    ) {
+      return error.status;
     }
 
     return undefined;

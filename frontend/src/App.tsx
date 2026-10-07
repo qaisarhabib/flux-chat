@@ -86,7 +86,7 @@ function App() {
       <section className="chat-card" aria-label="Chatbot conversation">
         <header className="chat-header">
           <h1>Simple Chatbot</h1>
-          <p>Powered by Mistral</p>
+          <p>Powered by Groq</p>
         </header>
 
         <div className="messages" aria-live="polite">

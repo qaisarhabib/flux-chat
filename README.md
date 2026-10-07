@@ -1,6 +1,6 @@
-# Simple Mistral Chatbot
+# Simple Groq Chatbot
 
-A small full-stack chatbot built with React, TypeScript, NestJS, LangChain, and the Mistral API.
+A small full-stack chatbot built with React, TypeScript, NestJS, LangChain, and the Groq API.
 
 ## Setup
 
@@ -10,7 +10,7 @@ A small full-stack chatbot built with React, TypeScript, NestJS, LangChain, and 
    npm install
    ```
 
-2. Copy the environment example and add your Mistral API key:
+2. Copy the environment example and add your Groq API key:
 
    ```bash
    cp .env.example .env
