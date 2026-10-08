@@ -1,4 +1,4 @@
-name: simple-mistral-chatbot
+name: flux-chat
 type: generic
 docroot: .
 webserver_type: generic

@@ -1,5 +1,5 @@
 {
-  "name": "simple-mistral-chatbot",
+  "name": "flux-chat",
   "private": true,
   "version": "1.0.0",
   "workspaces": [
