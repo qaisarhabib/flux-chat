@@ -9,7 +9,9 @@
   "scripts": {
     "dev": "concurrently -n frontend,backend -c cyan,magenta \"npm run dev -w frontend\" \"npm run start:dev -w backend\"",
     "build": "npm run build -w frontend && npm run build -w backend",
-    "start": "npm run start -w backend"
+    "start": "npm run start -w backend",
+    "test": "npm run test --workspaces --if-present",
+    "test:coverage": "npm run test:coverage --workspaces --if-present"
   },
   "devDependencies": {
     "concurrently": "^9.1.2"
